@@ -372,7 +372,6 @@ function SaveBanner() {
   const phase = useChat((s) => s.phase);
   if (phase !== 'matched' || save === 'none') return null;
   const body: Record<typeof save, React.ReactNode> = {
-    none: null,
     requested_by_me: 'Waiting for the stranger to agree to save this conversation…',
     requested_by_peer: (
       <span className="flex flex-wrap items-center justify-center gap-2">
