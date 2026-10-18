@@ -72,6 +72,10 @@ describe('Supabase JWT verification', () => {
     await expectUnauthorized(verifySupabaseJwt(await es256({ ...baseClaims(), role: 'anon', aud: 'anon' }), cfg()));
     await expectUnauthorized(verifySupabaseJwt(await es256({ ...baseClaims(), role: 'service_role' }), cfg()));
   });
+  it('normalizes whitespace, quotes and trailing slashes in the configured Supabase URL', async () => {
+    const u = await verifySupabaseJwt(await es256(baseClaims()), cfg({ supabaseUrl: `  "${SUPA}/"  ` }));
+    expect(u.id).toBe(baseClaims().sub);
+  });
   it('rejects wrong issuer', async () => {
     await expectUnauthorized(verifySupabaseJwt(await es256({ ...baseClaims(), iss: 'https://evil.example/auth/v1' }), cfg()));
   });

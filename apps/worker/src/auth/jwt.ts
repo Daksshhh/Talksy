@@ -44,6 +44,10 @@ const jwksCache = new Map<string, JwksCache>();
 const JWKS_TTL_MS = 10 * 60_000;
 const CLOCK_SKEW_S = 30;
 
+function normalizeSupabaseUrl(value: string): string {
+  return value.trim().replace(/^(['"])(.*)\1$/, '$2').replace(/\/+$/, '');
+}
+
 export interface VerifyConfig {
   supabaseUrl: string;
   serviceRoleKey: string;
@@ -67,7 +71,7 @@ function algParams(alg: string, jwk?: JsonWebKey): { import: AlgorithmIdentifier
 }
 
 async function getJwk(cfg: VerifyConfig, kid: string | undefined, alg: string): Promise<CryptoKey | null> {
-  const url = `${cfg.supabaseUrl.replace(/\/$/, '')}/auth/v1/.well-known/jwks.json`;
+  const url = `${normalizeSupabaseUrl(cfg.supabaseUrl)}/auth/v1/.well-known/jwks.json`;
   const now = Date.now();
   let cache = jwksCache.get(url);
   const lookup = () => {
@@ -114,7 +118,7 @@ async function verifySignature(cfg: VerifyConfig, header: JwtHeader, signingInpu
 }
 
 async function verifyRemote(cfg: VerifyConfig, token: string): Promise<boolean> {
-  const res = await (cfg.fetchImpl ?? fetch)(`${cfg.supabaseUrl.replace(/\/$/, '')}/auth/v1/user`, {
+  const res = await (cfg.fetchImpl ?? fetch)(`${normalizeSupabaseUrl(cfg.supabaseUrl)}/auth/v1/user`, {
     headers: { apikey: cfg.serviceRoleKey, Authorization: `Bearer ${token}` },
   });
   return res.ok;
@@ -137,7 +141,7 @@ export async function verifySupabaseJwt(token: string, cfg: VerifyConfig): Promi
   const nowS = cfg.nowS ? cfg.nowS() : Math.floor(Date.now() / 1000);
   if (typeof claims.exp !== 'number' || claims.exp + CLOCK_SKEW_S < nowS) throw unauthorized('Session expired');
   if (typeof claims.sub !== 'string' || !claims.sub) throw unauthorized('Invalid token subject');
-  const expectedIss = `${cfg.supabaseUrl.replace(/\/$/, '')}/auth/v1`;
+  const expectedIss = `${normalizeSupabaseUrl(cfg.supabaseUrl)}/auth/v1`;
   if (claims.iss && claims.iss !== expectedIss) throw unauthorized('Invalid token issuer');
   const aud = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
   if (claims.role !== 'authenticated' || !aud.includes('authenticated')) throw unauthorized('Invalid token audience');

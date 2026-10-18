@@ -178,13 +178,6 @@ export function LandingPage() {
         </Button>
       </section>
 
-      {/* Mobile sticky CTA */}
-      <div className="glass fixed inset-x-0 bottom-0 z-20 border-t border-border/60 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
-        <Button size="lg" className="w-full" onClick={start}>
-          Start Chatting
-        </Button>
-      </div>
-      <div className="h-20 sm:hidden" aria-hidden />
     </>
   );
 }
