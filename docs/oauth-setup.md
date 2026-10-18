@@ -27,15 +27,15 @@ Go to **Authentication → Sign In / Providers → Google**, enable it, paste th
 - Site URL: your production app URL (for dev: `http://localhost:5173`)
 - Redirect URLs:
   - `http://localhost:5173/auth/callback`
-  - `https://chat.yourdomain.com/auth/callback` (or `https://orbitchat.pages.dev/auth/callback`)
-  - Preview builds (optional): `https://*.orbitchat.pages.dev/auth/callback`
+  - `https://chat.yourdomain.com/auth/callback` (or `https://talksy.pages.dev/auth/callback`)
+  - Preview builds (optional): `https://*.talksy.pages.dev/auth/callback`
 
 The app sends `redirectTo = ${window.location.origin}/auth/callback?next=…`, so each origin you use must be on this list.
 
 ## 6. Guest → Google upgrade
 Enable **Manual linking**. The app calls `supabase.auth.linkIdentity({ provider: 'google' })`, which attaches Google to the **same user id**, so friends, DMs and history are kept.
 
-If that Google account already belongs to another OrbitChat user, Supabase returns `identity_already_exists`. The callback page explains the conflict, and nothing is merged or silently replaced.
+If that Google account already belongs to another Talksy user, Supabase returns `identity_already_exists`. The callback page explains the conflict, and nothing is merged or silently replaced.
 
 ## 7. Test locally
 `pnpm dev` → Log in → **Continue with Google**. You should land on `/onboarding` (new user) or `/app` (returning user). Also check sign out → sign in (returning user), and leave a tab open for more than an hour to confirm silent token refresh.

@@ -22,7 +22,7 @@ npx wrangler secret put TURNSTILE_SECRET_KEY --env production        # optional
 npx wrangler secret put SUPABASE_JWT_SECRET --env production         # only for legacy HS256 projects
 pnpm deploy           # = wrangler deploy --env production (creates DO classes via the v1 migration)
 ```
-The output gives you `https://orbitchat-api.<account>.workers.dev`. Your API base is that URL, and the WebSocket base is the same host with `wss://`.
+The output gives you `https://talksy-api.<account>.workers.dev`. Your API base is that URL, and the WebSocket base is the same host with `wss://`.
 
 Custom domain (optional): add the `routes` line in `wrangler.toml` (`api.yourdomain.com`, `custom_domain = true`). HTTPS/WSS certificates are automatic.
 
@@ -35,7 +35,7 @@ Option 1, Git integration: **Workers & Pages → Create → Pages → Connect re
 - Root directory: `/`
 - Environment variables (Production):
   ```
-  VITE_APP_NAME=OrbitChat
+  VITE_APP_NAME=Talksy
   VITE_APP_URL=https://chat.yourdomain.com
   VITE_SUPABASE_URL=https://REF.supabase.co
   VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_…
@@ -46,7 +46,7 @@ Option 1, Git integration: **Workers & Pages → Create → Pages → Connect re
   NODE_VERSION=20
   ```
 
-Option 2, direct upload: `cd apps/web && pnpm build && npx wrangler pages deploy dist --project-name orbitchat`. Env vars are read at build time from `apps/web/.env.production`.
+Option 2, direct upload: `cd apps/web && pnpm build && npx wrangler pages deploy dist --project-name talksy`. Env vars are read at build time from `apps/web/.env.production`.
 
 `public/_redirects` provides SPA routing and `public/_headers` sets the security headers and CSP. **Edit `connect-src` in `_headers`** to your real API and Supabase domains.
 

@@ -1,5 +1,5 @@
-# OrbitChat API — Cloudflare Worker + Durable Objects
-name = "orbitchat-api"
+# Talksy API — Cloudflare Worker + Durable Objects
+name = "talksy-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 workers_dev = true
@@ -33,8 +33,8 @@ enabled = true
 
 # ----------------------------------------------------------------- staging
 [env.staging]
-name = "orbitchat-api-staging"
-vars = { APP_ENV = "staging", CLIENT_ORIGIN = "https://staging.orbitchat.pages.dev", REQUIRE_TURNSTILE = "false" }
+name = "talksy-api-staging"
+vars = { APP_ENV = "staging", CLIENT_ORIGIN = "https://staging.talksy.pages.dev", REQUIRE_TURNSTILE = "false" }
 durable_objects.bindings = [
   { name = "MATCH_COORDINATOR", class_name = "MatchCoordinator" },
   { name = "CHAT_ROOM", class_name = "ChatRoom" },
@@ -43,9 +43,9 @@ triggers = { crons = ["17 3 * * *"] }
 
 # ----------------------------------------------------------------- production
 [env.production]
-name = "orbitchat-api"
+name = "talksy-api"
 # Replace with your Pages URL and/or custom domain, comma separated.
-vars = { APP_ENV = "production", CLIENT_ORIGIN = "https://orbitchat.pages.dev", REQUIRE_TURNSTILE = "false" }
+vars = { APP_ENV = "production", CLIENT_ORIGIN = "https://talksy.pages.dev", REQUIRE_TURNSTILE = "false" }
 durable_objects.bindings = [
   { name = "MATCH_COORDINATOR", class_name = "MatchCoordinator" },
   { name = "CHAT_ROOM", class_name = "ChatRoom" },

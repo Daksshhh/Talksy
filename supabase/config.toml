@@ -1,5 +1,5 @@
 # Minimal Supabase CLI config for local development (`supabase start`).
-project_id = "orbit-chat"
+project_id = "talksy"
 
 [api]
 port = 54321

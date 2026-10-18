@@ -140,7 +140,7 @@ export async function exportMe(ctx: Ctx): Promise<Response> {
   const user = await requireUser(ctx.req, ctx.env);
   limitWrites(user.id);
   const data = await db(ctx.env).rpc<unknown>('export_my_data', { p_actor: user.id });
-  return json(data, 200, { 'Content-Disposition': 'attachment; filename="orbitchat-data-export.json"' });
+  return json(data, 200, { 'Content-Disposition': 'attachment; filename="talksy-data-export.json"' });
 }
 
 export async function getPublicProfile(ctx: Ctx): Promise<Response> {

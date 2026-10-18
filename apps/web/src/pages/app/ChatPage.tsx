@@ -38,7 +38,7 @@ export default function ChatPage() {
     chatClient.ensureLobby();
   }, []);
   useEffect(() => {
-    document.title = phase === 'matched' ? 'Chatting — OrbitChat' : 'Random Chat — OrbitChat';
+    document.title = phase === 'matched' ? 'Chatting — Talksy' : 'Random Chat — Talksy';
   }, [phase]);
 
   if (me?.restriction) {

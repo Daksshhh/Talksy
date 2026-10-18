@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "deploy": "pnpm build && wrangler pages deploy dist --project-name orbitchat"
+    "deploy": "pnpm build && wrangler pages deploy dist --project-name talksy"
   },
   "dependencies": {
     "@fontsource-variable/plus-jakarta-sans": "^5.1.0",

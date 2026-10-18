@@ -23,7 +23,7 @@ export default function AuthCallbackPage() {
       const code = params.get('error_code') || hash.get('error_code');
       setError(
         code === 'identity_already_exists'
-          ? 'That Google account is already linked to another OrbitChat account. Sign out and sign in with Google to use it — your current guest data stays on this guest account.'
+          ? 'That Google account is already linked to another Talksy account. Sign out and sign in with Google to use it — your current guest data stays on this guest account.'
           : err,
       );
       return;

@@ -15,7 +15,9 @@ export function PublicLayout() {
   useEffect(() => {
     if (params.get('auth') === '1' && status === 'signedOut') setAuthOpen(true);
   }, [params, status, setAuthOpen]);
-  useEffect(() => window.scrollTo(0, 0), [loc.pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [loc.pathname]);
 
   return (
     <div className="flex min-h-[100dvh] flex-col">

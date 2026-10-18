@@ -12,7 +12,7 @@ export const supabase = createClient(env.supabaseUrl || 'http://invalid.local', 
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    storageKey: 'orbit.auth',
+    storageKey: 'talksy.auth',
   },
   realtime: { params: { eventsPerSecond: 10 } },
 });

@@ -81,7 +81,7 @@ export function floodKey(text: string): string {
     .trim();
 }
 
-const RESERVED_NAMES = /\b(admin|moderator|mod|staff|support|official|system|orbitchat)\b/i;
+const RESERVED_NAMES = /\b(admin|moderator|mod|staff|support|official|system|talksy|orbitchat)\b/i;
 
 export function validateDisplayName(input: unknown): Result<string> {
   const r = sanitizeText(input, LIMITS.DISPLAY_NAME_MAX, { singleLine: true });

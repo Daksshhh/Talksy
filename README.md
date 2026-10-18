@@ -1,8 +1,8 @@
-# OrbitChat
+# Talksy
 
 **A random hello could become a great conversation.**
 
-OrbitChat is a mobile-first, real-time, anonymous random **text** chat web app. It has guest and Google sign-in, gender-blind first-available matching, friends, persistent DMs, consent-based history, notifications, moderation, and **Conversation Quest**, a two-player icebreaker game.
+Talksy is a mobile-first, real-time, anonymous random **text** chat web app. It has guest and Google sign-in, gender-blind first-available matching, friends, persistent DMs, consent-based history, notifications, moderation, and **Conversation Quest**, a two-player icebreaker game.
 
 | Layer | Tech |
 |---|---|

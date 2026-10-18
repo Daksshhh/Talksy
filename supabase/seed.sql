@@ -1,4 +1,4 @@
--- OrbitChat seed strategy
+-- Talksy seed strategy
 -- -----------------------------------------------------------------------------
 -- Production: NO seed data. Users, chats and statistics are always real.
 -- Quest question packs ship in packages/quest-content (versioned with the code).

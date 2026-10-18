@@ -1,5 +1,5 @@
 -- =====================================================================
--- OrbitChat - initial schema
+-- Talksy - initial schema
 -- Identity: Supabase Auth (auth.users). Every user-owned table has RLS.
 -- Privileged writes happen through SECURITY DEFINER functions that are
 -- executable ONLY by service_role (the Worker), taking a verified actor id,
@@ -23,7 +23,7 @@ end $$;
 -- ---------------------------------------------------------------------
 create table public.profiles (
   id            uuid primary key references auth.users(id) on delete cascade,
-  public_id     text not null unique default ('orb_' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 10)),
+  public_id     text not null unique default ('talk_' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 10)),
   display_name  text not null check (char_length(display_name) between 2 and 24),
   avatar_seed   text not null default substr(md5(random()::text), 1, 12) check (avatar_seed ~ '^[A-Za-z0-9]{4,16}$'),
   avatar_style  text not null default 'orbit' check (avatar_style in ('orbit','nebula','comet','aurora','pulse','prism')),

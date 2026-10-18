@@ -61,7 +61,7 @@ export default function ProfilePage() {
       const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'orbitchat-data-export.json';
+      a.download = 'talksy-data-export.json';
       a.click();
       URL.revokeObjectURL(url);
     } catch (e) {

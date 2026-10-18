@@ -1,5 +1,5 @@
 -- =====================================================================
--- OrbitChat - atomic business functions
+-- Talksy - atomic business functions
 -- Error convention: RAISE EXCEPTION '<code>:<message>' USING ERRCODE='P0001'
 -- (mapped to typed HTTP errors by the Worker).
 -- =====================================================================
