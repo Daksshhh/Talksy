@@ -1,0 +1,24 @@
+# Copy to .dev.vars for `wrangler dev`. NEVER commit .dev.vars.
+SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+
+# Server-only secret (Dashboard > Project Settings > API Keys: the "secret" key sb_secret_..., or the legacy service_role JWT)
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SECRET_KEY
+
+# Optional: ONLY if your project still signs JWTs with the legacy HS256 shared secret
+# (Dashboard > Project Settings > JWT Keys > Legacy JWT secret). If omitted and the
+# project uses HS256, tokens are verified remotely via /auth/v1/user instead.
+# Projects using asymmetric signing keys (recommended) need nothing here: the Worker
+# verifies tokens against https://YOUR_PROJECT_REF.supabase.co/auth/v1/.well-known/jwks.json
+SUPABASE_JWT_SECRET=
+
+# Random 32+ char secret used to sign room join tokens. Generate: openssl rand -base64 48
+ROOM_TOKEN_SECRET=change-me-to-a-long-random-string
+
+# Allowed frontend origin(s), comma separated
+CLIENT_ORIGIN=http://localhost:5173
+
+# Optional bot protection on realtime tickets for guest accounts
+TURNSTILE_SECRET_KEY=YOUR_TURNSTILE_SECRET_KEY
+REQUIRE_TURNSTILE=false
+
+APP_ENV=development

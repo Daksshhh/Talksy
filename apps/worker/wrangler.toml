@@ -1,0 +1,55 @@
+# OrbitChat API — Cloudflare Worker + Durable Objects
+name = "orbitchat-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+workers_dev = true
+
+# Durable Objects (SQLite storage backend — available on the Workers Free plan)
+[[durable_objects.bindings]]
+name = "MATCH_COORDINATOR"
+class_name = "MatchCoordinator"
+
+[[durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["MatchCoordinator", "ChatRoom"]
+
+# Non-secret configuration (local dev defaults). Secrets go in .dev.vars locally
+# and `wrangler secret put` in deployed environments.
+[vars]
+APP_ENV = "development"
+CLIENT_ORIGIN = "http://localhost:5173,http://127.0.0.1:5173"
+REQUIRE_TURNSTILE = "false"
+
+# Daily data-retention purge.
+[triggers]
+crons = ["17 3 * * *"]
+
+[observability]
+enabled = true
+
+# ----------------------------------------------------------------- staging
+[env.staging]
+name = "orbitchat-api-staging"
+vars = { APP_ENV = "staging", CLIENT_ORIGIN = "https://staging.orbitchat.pages.dev", REQUIRE_TURNSTILE = "false" }
+durable_objects.bindings = [
+  { name = "MATCH_COORDINATOR", class_name = "MatchCoordinator" },
+  { name = "CHAT_ROOM", class_name = "ChatRoom" },
+]
+triggers = { crons = ["17 3 * * *"] }
+
+# ----------------------------------------------------------------- production
+[env.production]
+name = "orbitchat-api"
+# Replace with your Pages URL and/or custom domain, comma separated.
+vars = { APP_ENV = "production", CLIENT_ORIGIN = "https://orbitchat.pages.dev", REQUIRE_TURNSTILE = "false" }
+durable_objects.bindings = [
+  { name = "MATCH_COORDINATOR", class_name = "MatchCoordinator" },
+  { name = "CHAT_ROOM", class_name = "ChatRoom" },
+]
+triggers = { crons = ["17 3 * * *"] }
+# Custom domain (optional, requires the zone on Cloudflare):
+# routes = [{ pattern = "api.yourdomain.com", custom_domain = true }]

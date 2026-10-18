@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#0B1020" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F5F7FB" media="(prefers-color-scheme: light)" />
+    <meta name="description" content="Meet someone new in seconds. Anonymous, real-time text conversations with people around the world." />
+    <meta property="og:title" content="OrbitChat — a random hello could become a great conversation" />
+    <meta property="og:description" content="Anonymous, real-time text chat with strangers worldwide. Free. Guest access in one tap." />
+    <meta name="color-scheme" content="dark light" />
+    <title>OrbitChat — Talk to someone new</title>
+    <script>
+      // Apply saved theme before paint (prevents flash).
+      try {
+        var t = localStorage.getItem('orbit.theme');
+        if (t === 'light') document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>OrbitChat needs JavaScript to run.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

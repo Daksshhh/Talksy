@@ -1,0 +1,15 @@
+-- OrbitChat seed strategy
+-- -----------------------------------------------------------------------------
+-- Production: NO seed data. Users, chats and statistics are always real.
+-- Quest question packs ship in packages/quest-content (versioned with the code).
+--
+-- Local development (supabase start): this file runs after migrations. It only
+-- contains commented helpers; create test users by signing in as a guest in two
+-- browser windows instead of inserting fake rows.
+--
+-- Grant yourself the admin role (run in SQL editor after signing in once):
+--   insert into public.admin_roles (user_id, role)
+--   select id, 'admin' from auth.users where email = 'you@example.com'
+--   on conflict (user_id) do update set role = excluded.role;
+-- -----------------------------------------------------------------------------
+select 1;

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/workers-types/2023-07-01"],
+    "noEmit": true
+  },
+  "include": ["src", "*.ts"],
+  "exclude": ["src/tests", "test", "vitest.integration.config.ts"]
+}
