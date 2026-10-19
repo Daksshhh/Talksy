@@ -1,9 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { matchPair, twoGuests } from './helpers';
 
-test('two browser contexts match, exchange messages and Next ends the session', async ({ browser }) => {
+test('two browser contexts match, exchange messages and two-tap Skip ends the session', async ({
+  browser,
+}) => {
   const { pa, pb, ctxA, ctxB } = await twoGuests(browser);
   await matchPair(pa, pb);
+  await expect(pa.getByTestId('match-found')).toBeVisible();
+  await expect(pb.getByTestId('match-found')).toBeVisible();
 
   await pa.getByLabel('Message').fill('Hello from A 👋');
   await pa.keyboard.press('Enter');
@@ -18,6 +22,9 @@ test('two browser contexts match, exchange messages and Next ends the session', 
   await expect(pa.getByText(/is typing/)).toBeVisible();
 
   await pa.getByTestId('next-stranger').click();
+  await expect(pa.getByTestId('next-stranger')).toContainText('Tap again');
+  await expect(pb.getByText('Connected', { exact: true })).toBeVisible();
+  await pa.getByTestId('next-stranger').click();
   await expect(pb.getByText(/disconnected/)).toBeVisible();
   await expect(pa.getByText('Finding someone to chat with…')).toBeVisible();
   await pa.getByRole('button', { name: 'Cancel Search' }).click();
@@ -25,7 +32,9 @@ test('two browser contexts match, exchange messages and Next ends the session', 
   await ctxB.close();
 });
 
-test('friend request -> accept -> DM persists after reload; history shows the chat', async ({ browser }) => {
+test('friend request -> accept -> DM persists after reload; history shows the chat', async ({
+  browser,
+}) => {
   const { pa, pb, ctxA, ctxB } = await twoGuests(browser, 'Frienda', 'Friendb');
   await matchPair(pa, pb);
   await pa.getByRole('button', { name: 'More actions' }).click();
@@ -37,7 +46,11 @@ test('friend request -> accept -> DM persists after reload; history shows the ch
   await expect(pb.getByText(/now friends/)).toBeVisible();
 
   await pb.goto('/app/inbox');
-  await pb.getByRole('link').filter({ hasText: /Frienda/ }).first().click();
+  await pb
+    .getByRole('link')
+    .filter({ hasText: /Frienda/ })
+    .first()
+    .click();
   await pb.getByLabel('Message').fill('persistent hello');
   await pb.keyboard.press('Enter');
   await expect(pb.getByText('persistent hello')).toBeVisible();

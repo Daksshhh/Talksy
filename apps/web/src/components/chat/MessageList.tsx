@@ -14,7 +14,15 @@ export interface ListMessage {
   seen?: boolean;
 }
 
-const Bubble = memo(function Bubble({ m, onRetry, peerName }: { m: ListMessage; onRetry?: (key: string) => void; peerName: string }) {
+const Bubble = memo(function Bubble({
+  m,
+  onRetry,
+  peerName,
+}: {
+  m: ListMessage;
+  onRetry?: (key: string) => void;
+  peerName: string;
+}) {
   const reduce = useReducedMotion();
   if (m.from === 'system')
     return (
@@ -24,27 +32,44 @@ const Bubble = memo(function Bubble({ m, onRetry, peerName }: { m: ListMessage; 
     );
   const mine = m.from === 'me';
   return (
-    <motion.div initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.16 }} className={cn('flex w-full', mine ? 'justify-end' : 'justify-start')}>
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.16 }}
+      className={cn('flex w-full', mine ? 'justify-end' : 'justify-start')}
+    >
       <div className={cn('max-w-[85%] sm:max-w-[70%]')}>
         <div
           className={cn(
             'whitespace-pre-wrap break-anywhere rounded-2xl px-3.5 py-2 text-[15px] leading-relaxed',
-            mine ? 'rounded-br-md bg-brand-gradient text-primary-fg' : 'rounded-bl-md bg-surface-2 text-fg',
+            mine
+              ? 'rounded-br-md bg-brand-gradient text-primary-fg'
+              : 'rounded-bl-md bg-surface-2 text-fg',
             m.status === 'failed' && 'opacity-70 ring-1 ring-danger',
           )}
         >
           <span className="sr-only">{mine ? 'You' : peerName}: </span>
           <SafeText text={m.text} />
         </div>
-        <div className={cn('mt-0.5 flex items-center gap-1 px-1 text-[11px] text-muted', mine ? 'justify-end' : 'justify-start')}>
+        <div
+          className={cn(
+            'mt-0.5 flex items-center gap-1 px-1 text-[11px] text-muted',
+            mine ? 'justify-end' : 'justify-start',
+          )}
+        >
           <time dateTime={new Date(m.ts).toISOString()}>{clockTime(m.ts)}</time>
           {mine && m.status === 'sending' && <span aria-label="Sending">· sending…</span>}
-          {mine && m.status === 'sent' && (m.seen ? <span>· Seen</span> : <Check className="h-3 w-3" aria-label="Delivered" />)}
+          {mine &&
+            m.status === 'sent' &&
+            (m.seen ? <span>· Seen</span> : <Check className="h-3 w-3" aria-label="Delivered" />)}
           {mine && m.status === 'failed' && (
             <span className="flex items-center gap-1 text-danger">
               <AlertCircle className="h-3 w-3" aria-hidden /> {m.error ?? 'Failed'}
               {onRetry && (
-                <button onClick={() => onRetry(m.key)} className="inline-flex items-center gap-0.5 font-semibold underline">
+                <button
+                  onClick={() => onRetry(m.key)}
+                  className="inline-flex items-center gap-0.5 font-semibold underline"
+                >
                   <RotateCw className="h-3 w-3" aria-hidden /> Retry
                 </button>
               )}
@@ -68,6 +93,7 @@ export function MessageList({
   header,
   footer,
   onReachTop,
+  emptyContent,
   className,
 }: {
   messages: ListMessage[];
@@ -78,6 +104,7 @@ export function MessageList({
   footer?: React.ReactNode;
   onReachTop?: () => void;
   className?: string;
+  emptyContent?: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
@@ -117,7 +144,8 @@ export function MessageList({
     const last = messages[messages.length - 1];
     if (!last) return;
     if (last.from === 'peer') setAnnounce(`${peerName}: ${last.text.slice(0, 140)}`);
-    if (atBottom.current || last.from === 'me') requestAnimationFrame(() => scrollToBottom(last.from !== 'me'));
+    if (atBottom.current || last.from === 'me')
+      requestAnimationFrame(() => scrollToBottom(last.from !== 'me'));
     else setUnseen((n) => n + 1);
     prevHeight.current = ref.current?.scrollHeight ?? 0;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,24 +169,47 @@ export function MessageList({
 
   return (
     <div className={cn('relative min-h-0 flex-1', className)}>
-      <div ref={ref} onScroll={onScroll} className="h-full overflow-y-auto overscroll-contain px-3 py-4 scrollbar-thin sm:px-6" role="log" aria-label="Conversation" aria-live="off">
+      <div
+        ref={ref}
+        onScroll={onScroll}
+        className="h-full overflow-y-auto overscroll-contain px-3 py-4 scrollbar-thin sm:px-6"
+        role="log"
+        aria-label="Conversation"
+        aria-live="off"
+      >
         {header}
+        {messages.length === 0 && emptyContent}
         <div className="space-y-1.5">
           {messages.map((m, i) => {
             const prev = messages[i - 1];
             return (
               <div key={m.key}>
-                {(!prev || !sameDay(prev.ts, m.ts)) && <div className="my-3 text-center text-[11px] font-semibold uppercase tracking-wide text-muted">{new Date(m.ts).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>}
+                {(!prev || !sameDay(prev.ts, m.ts)) && (
+                  <div className="my-3 text-center text-[11px] font-semibold uppercase tracking-wide text-muted">
+                    {new Date(m.ts).toLocaleDateString(undefined, {
+                      weekday: 'short',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </div>
+                )}
                 <Bubble m={m} onRetry={onRetry} peerName={peerName} />
               </div>
             );
           })}
         </div>
         {typing && (
-          <div className="mt-2 flex items-center gap-1.5 px-1 text-xs text-muted" aria-live="polite">
+          <div
+            className="mt-2 flex items-center gap-1.5 px-1 text-xs text-muted"
+            aria-live="polite"
+          >
             <span className="inline-flex gap-1 rounded-2xl bg-surface-2 px-3 py-2.5">
               {[0, 1, 2].map((d) => (
-                <span key={d} className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce-dot" style={{ animationDelay: `${d * 0.15}s` }} />
+                <span
+                  key={d}
+                  className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce-dot"
+                  style={{ animationDelay: `${d * 0.15}s` }}
+                />
               ))}
             </span>
             <span>{peerName} is typing…</span>
@@ -170,8 +221,12 @@ export function MessageList({
         {announce}
       </div>
       {unseen > 0 && (
-        <button onClick={() => scrollToBottom()} className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-fg shadow-glow">
-          <ArrowDown className="h-3.5 w-3.5" aria-hidden /> {unseen} new message{unseen > 1 ? 's' : ''}
+        <button
+          onClick={() => scrollToBottom()}
+          className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-fg shadow-glow"
+        >
+          <ArrowDown className="h-3.5 w-3.5" aria-hidden /> {unseen} new message
+          {unseen > 1 ? 's' : ''}
         </button>
       )}
     </div>

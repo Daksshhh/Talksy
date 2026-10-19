@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { SendHorizonal } from 'lucide-react';
 import { charCount } from '@orbit/shared';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,7 @@ export function Composer({
   disabled,
   placeholder = 'Type a message…',
   maxChars,
+  leadingAction,
   draftKey,
 }: {
   onSend: (text: string) => boolean | Promise<boolean> | void;
@@ -21,8 +22,11 @@ export function Composer({
   placeholder?: string;
   maxChars: number;
   draftKey?: string;
+  leadingAction?: ReactNode;
 }) {
-  const [text, setText] = useState(() => (draftKey ? sessionStorage.getItem(draftKey) ?? '' : ''));
+  const [text, setText] = useState(() =>
+    draftKey ? (sessionStorage.getItem(draftKey) ?? '') : '',
+  );
   const ref = useRef<HTMLTextAreaElement>(null);
   const typingOn = useRef(false);
   const typingTimer = useRef<ReturnType<typeof setTimeout>>();
@@ -30,7 +34,7 @@ export function Composer({
   const over = count > maxChars;
 
   useEffect(() => {
-    setText(draftKey ? sessionStorage.getItem(draftKey) ?? '' : '');
+    setText(draftKey ? (sessionStorage.getItem(draftKey) ?? '') : '');
   }, [draftKey]);
 
   useEffect(() => {
@@ -95,36 +99,51 @@ export function Composer({
 
   return (
     <div className="border-t border-border bg-surface px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_rgb(0_0_0/0.12)] sm:px-6">
-      <div className={cn('flex items-end gap-2 rounded-2xl border bg-surface-2 p-1.5 pl-3.5 shadow-inner transition focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/15', over ? 'border-danger' : 'border-border')}>
-        <label htmlFor="composer" className="sr-only">
-          Message
-        </label>
-        <textarea
-          id="composer"
-          ref={ref}
-          rows={1}
-          value={text}
-          disabled={disabled}
-          placeholder={placeholder}
-          onChange={(e) => change(e.target.value)}
-          onKeyDown={onKey}
-          onBlur={stopTyping}
-          enterKeyHint="send"
-          className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[16px] leading-6 text-fg placeholder:text-muted focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed sm:text-[15px]"
-          aria-describedby="composer-count"
-        />
-        <button
-          onClick={() => void submit()}
-          disabled={disabled || !text.trim() || over}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-gradient text-primary-fg transition active:scale-95 disabled:opacity-40"
-          aria-label="Send message"
+      <div className="flex items-end gap-2">
+        {leadingAction}
+        <div
+          className={cn(
+            'flex min-w-0 flex-1 items-end gap-2 rounded-2xl border bg-surface-2 p-1.5 pl-3.5 shadow-inner transition focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/15',
+            over ? 'border-danger' : 'border-border',
+          )}
         >
-          <SendHorizonal className="h-5 w-5" />
-        </button>
+          <label htmlFor="composer" className="sr-only">
+            Message
+          </label>
+          <textarea
+            id="composer"
+            ref={ref}
+            rows={1}
+            value={text}
+            disabled={disabled}
+            placeholder={placeholder}
+            onChange={(e) => change(e.target.value)}
+            onKeyDown={onKey}
+            onBlur={stopTyping}
+            enterKeyHint="send"
+            className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[16px] leading-6 text-fg placeholder:text-muted focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed sm:text-[15px]"
+            aria-describedby="composer-count"
+          />
+          <button
+            onClick={() => void submit()}
+            disabled={disabled || !text.trim() || over}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-gradient text-primary-fg transition active:scale-95 disabled:opacity-40"
+            aria-label="Send message"
+          >
+            <SendHorizonal className="h-5 w-5" />
+          </button>
+        </div>
       </div>
       <div className="mt-1 flex justify-between px-1 text-[11px] text-muted">
         <span className="hidden sm:inline">Enter to send · Shift+Enter for a new line</span>
-        <span id="composer-count" className={cn('ml-auto', over ? 'font-bold text-danger' : count > maxChars * 0.8 ? 'text-warning' : 'invisible')} aria-live="polite">
+        <span
+          id="composer-count"
+          className={cn(
+            'ml-auto',
+            over ? 'font-bold text-danger' : count > maxChars * 0.8 ? 'text-warning' : 'invisible',
+          )}
+          aria-live="polite"
+        >
           {count}/{maxChars}
         </span>
       </div>
