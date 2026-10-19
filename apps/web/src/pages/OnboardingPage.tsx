@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Dices, Shield } from 'lucide-react';
 import {
@@ -26,7 +26,6 @@ export default function OnboardingPage() {
   const me = useMe().data!;
   const update = useUpdateMe();
   const navigate = useNavigate();
-  const [params] = useSearchParams();
   const [step, setStep] = useState(0);
   const [name, setName] = useState(me.displayName);
   const [avatar, setAvatar] = useState({ style: me.avatarStyle, seed: me.avatarSeed });
@@ -69,11 +68,9 @@ export default function OnboardingPage() {
         acceptTerms: true,
         completeOnboarding: true,
       });
-      const target = params.get('next');
-      const destination = target && target.startsWith('/app') ? target : '/app/chat';
-      navigate(destination, {
+      navigate('/app/chat', {
         replace: true,
-        state: destination === '/app/chat' ? { autoStart: true } : undefined,
+        state: { autoStart: true },
       });
     } catch (e) {
       setError(errorMessage(e));

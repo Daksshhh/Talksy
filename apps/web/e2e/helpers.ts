@@ -1,10 +1,11 @@
 import { expect, type Browser, type Page } from '@playwright/test';
 
 /** Guest sign-in + onboarding through the real UI. */
-export async function guestOnboard(page: Page, name: string) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.getByRole('button', { name: 'Continue as Guest' }).click();
+export async function guestOnboard(page: Page, name: string, entry = '/') {
+  await page.goto(entry);
+  const guestButton = page.getByRole('button', { name: 'Continue as Guest' });
+  if (!(await guestButton.isVisible())) await page.getByRole('button', { name: 'Log in' }).click();
+  await guestButton.click();
   await expect(page).toHaveURL(/\/onboarding/);
   await page.getByLabel('Display name').fill(name);
   await page.getByRole('button', { name: 'Continue' }).click();

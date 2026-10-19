@@ -9,7 +9,12 @@ interface AuthState {
   isAnonymous: boolean;
 }
 
-export const useAuth = create<AuthState>(() => ({ status: 'loading', session: null, userId: null, isAnonymous: false }));
+export const useAuth = create<AuthState>(() => ({
+  status: 'loading',
+  session: null,
+  userId: null,
+  isAnonymous: false,
+}));
 
 function apply(session: Session | null) {
   useAuth.setState({
@@ -38,7 +43,9 @@ export function startAuth(onSignedOut: () => void): () => void {
 }
 
 export async function signInAsGuest(captchaToken?: string) {
-  const { error } = await supabase.auth.signInAnonymously(captchaToken ? { options: { captchaToken } } : undefined);
+  const { error } = await supabase.auth.signInAnonymously(
+    captchaToken ? { options: { captchaToken } } : undefined,
+  );
   if (error) throw error;
 }
 
@@ -56,10 +63,14 @@ export async function signInWithGoogle(next = '/app') {
 
 /** Upgrade a guest: link Google to the SAME user id so friends/history are kept. */
 export async function linkGoogle() {
-  const { error } = await supabase.auth.linkIdentity({ provider: 'google', options: { redirectTo: callbackUrl('/app/profile?linked=1') } });
+  const { error } = await supabase.auth.linkIdentity({
+    provider: 'google',
+    options: { redirectTo: callbackUrl('/app/profile?linked=1') },
+  });
   if (error) throw error;
 }
 
 export async function signOut() {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
 }
