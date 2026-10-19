@@ -41,7 +41,7 @@ export function Menu({ trigger, items, align = 'right', label }: { trigger: (p: 
     <div ref={ref} className="relative">
       {trigger({ onClick: () => setOpen((o) => !o), 'aria-expanded': open, 'aria-haspopup': 'menu', 'aria-controls': id })}
       {open && (
-        <div id={id} role="menu" aria-label={label} className={cn('absolute z-40 mt-2 min-w-[200px] overflow-hidden rounded-2xl border border-border bg-surface p-1.5 shadow-2xl', align === 'right' ? 'right-0' : 'left-0')}>
+        <div id={id} role="menu" aria-label={label} className={cn('absolute z-40 mt-2 min-w-[220px] overflow-hidden rounded-2xl border border-border bg-surface p-1.5 shadow-[0_18px_50px_rgb(0_0_0/0.45)] ring-1 ring-black/10', align === 'right' ? 'right-0' : 'left-0')}>
           {items.map((it) => (
             <button
               key={it.label}

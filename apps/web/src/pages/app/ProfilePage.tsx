@@ -138,20 +138,20 @@ export default function ProfilePage() {
       <Dialog open={editing} onClose={() => setEditing(false)} title="Edit profile" size="lg">
         <div className="space-y-5">
           <Field label="Display name" error={error}>
-            {(p) => <Input {...p} value={form.displayName} maxLength={LIMITS.DISPLAY_NAME_MAX} onChange={(e) => setForm({ ...form, displayName: e.target.value })} />}
+            {(p) => <Input {...p} value={form.displayName} maxLength={LIMITS.DISPLAY_NAME_MAX} onChange={(e) => setForm((current) => ({ ...current, displayName: e.target.value }))} />}
           </Field>
-          <AvatarPicker value={form.avatar} onChange={(avatar) => setForm({ ...form, avatar })} />
+          <AvatarPicker value={form.avatar} onChange={(avatar) => setForm((current) => ({ ...current, avatar }))} />
           <Field label="Bio" hint={`${form.bio.length}/${LIMITS.BIO_MAX}`}>
-            {(p) => <Textarea {...p} value={form.bio} maxLength={LIMITS.BIO_MAX} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="A little about you (no personal contact info)" />}
+            {(p) => <Textarea {...p} value={form.bio} maxLength={LIMITS.BIO_MAX} onChange={(e) => setForm((current) => ({ ...current, bio: e.target.value }))} placeholder="A little about you (no personal contact info)" />}
           </Field>
           <Field label="Preferred language">
             {(p) => (
-              <Select {...p} value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })}>
+              <Select {...p} value={form.language} onChange={(e) => setForm((current) => ({ ...current, language: e.target.value }))}>
                 {LANGUAGES.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
               </Select>
             )}
           </Field>
-          <InterestsInput value={form.interests} onChange={(interests) => setForm({ ...form, interests })} />
+          <InterestsInput value={form.interests} onChange={(interests) => setForm((current) => ({ ...current, interests }))} />
           <div className="flex justify-end gap-2">
             <Button variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
             <Button onClick={save} loading={update.isPending}>Save changes</Button>

@@ -9,7 +9,7 @@ import { Logo } from '@/components/ui/Logo';
 import { Avatar } from '@/components/ui/Avatar';
 import { CountBadge } from '@/components/ui/Feedback';
 import { cn } from '@/lib/utils';
-import { NotificationBell } from './NotificationBell';
+import { NotificationBell } from './NotificationPopover';
 import { ThemeToggle } from './ThemeToggle';
 import { ConnectionBanner } from './ConnectionBanner';
 
@@ -43,7 +43,7 @@ export function AppShell() {
   const focusMode = !!inThread || inChat;
 
   return (
-    <div className="flex h-vvh min-h-0 w-full overflow-hidden lg:h-[100dvh]">
+    <div className="app-viewport flex min-h-0 w-full overflow-hidden">
       {/* Desktop sidebar */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border/60 bg-surface/50 px-3 py-4 lg:flex" aria-label="Main navigation">
         <NavLink to="/app" className="mb-6 px-3">
@@ -84,18 +84,18 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile/tablet top bar */}
         {!focusMode && (
-          <header className="glass sticky top-0 z-30 flex items-center justify-between border-b border-border/60 px-4 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] lg:hidden">
-            <NavLink to="/app" aria-label="Home">
+          <header className="glass sticky top-0 z-30 flex items-center justify-between border-b border-border px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] shadow-soft lg:hidden">
+            <NavLink to="/app" aria-label="Talksy home" className="rounded-xl px-1.5 py-1 transition hover:bg-surface-2">
               <Logo />
             </NavLink>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 rounded-2xl border border-border bg-surface-2/70 p-1">
               <ThemeToggle />
               <NotificationBell />
             </div>
           </header>
         )}
         {/* Desktop top bar */}
-        <header className="hidden items-center justify-end gap-2 border-b border-border/60 px-6 py-3 lg:flex">
+        <header className="glass hidden min-h-[64px] items-center justify-end gap-1 border-b border-border px-6 py-2.5 shadow-soft lg:flex">
           <ThemeToggle />
           <NotificationBell />
         </header>

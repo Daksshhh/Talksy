@@ -94,8 +94,8 @@ export function Composer({
   };
 
   return (
-    <div className="border-t border-border/60 bg-surface/80 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 sm:px-6">
-      <div className={cn('flex items-end gap-2 rounded-2xl border bg-surface-2/60 p-1.5 pl-3.5 transition-colors focus-within:border-primary', over ? 'border-danger' : 'border-border')}>
+    <div className="border-t border-border bg-surface px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_rgb(0_0_0/0.12)] sm:px-6">
+      <div className={cn('flex items-end gap-2 rounded-2xl border bg-surface-2 p-1.5 pl-3.5 shadow-inner transition focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/15', over ? 'border-danger' : 'border-border')}>
         <label htmlFor="composer" className="sr-only">
           Message
         </label>
@@ -110,7 +110,7 @@ export function Composer({
           onKeyDown={onKey}
           onBlur={stopTyping}
           enterKeyHint="send"
-          className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[16px] leading-6 text-fg placeholder:text-muted focus:outline-none disabled:cursor-not-allowed sm:text-[15px]"
+          className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[16px] leading-6 text-fg placeholder:text-muted focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed sm:text-[15px]"
           aria-describedby="composer-count"
         />
         <button

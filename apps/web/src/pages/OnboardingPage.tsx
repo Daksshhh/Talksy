@@ -12,6 +12,7 @@ import { InterestsInput } from '@/components/auth/InterestsInput';
 import { errorMessage } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
+import { chatClient } from '@/services/chatClient';
 const STEPS = ['Your vibe', 'About you', 'Safety'];
 
 export default function OnboardingPage() {
@@ -60,7 +61,11 @@ export default function OnboardingPage() {
         completeOnboarding: true,
       });
       const target = params.get('next');
-      navigate(target && target.startsWith('/app') ? target : '/app/chat', { replace: true });
+      const destination = target && target.startsWith('/app') ? target : '/app/chat';
+      if (destination === '/app/chat') {
+        chatClient.start();
+      }
+      navigate(destination, { replace: true });
     } catch (e) {
       setError(errorMessage(e));
     }

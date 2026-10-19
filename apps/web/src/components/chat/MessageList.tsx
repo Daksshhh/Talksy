@@ -129,6 +129,16 @@ export function MessageList({
 
   useEffect(() => scrollToBottom(false), [scrollToBottom]);
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+    const keepComposerVisible = () => {
+      if (atBottom.current) requestAnimationFrame(() => scrollToBottom(false));
+    };
+    viewport.addEventListener('resize', keepComposerVisible);
+    return () => viewport.removeEventListener('resize', keepComposerVisible);
+  }, [scrollToBottom]);
+
   return (
     <div className={cn('relative min-h-0 flex-1', className)}>
       <div ref={ref} onScroll={onScroll} className="h-full overflow-y-auto overscroll-contain px-3 py-4 scrollbar-thin sm:px-6" role="log" aria-label="Conversation" aria-live="off">

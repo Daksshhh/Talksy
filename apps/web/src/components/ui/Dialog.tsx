@@ -33,6 +33,12 @@ export function Dialog({
   const titleId = useId();
   const descId = useId();
   const reduce = useReducedMotion();
+  const onCloseRef = useRef(onClose);
+  const dismissibleRef = useRef(dismissible);
+
+  onCloseRef.current = onClose;
+  dismissibleRef.current = dismissible;
+
 
   useEffect(() => {
     if (!open) return;
@@ -44,9 +50,9 @@ export function Dialog({
       el?.focus();
     }, 30);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && dismissible) {
+      if (e.key === 'Escape' && dismissibleRef.current) {
         e.stopPropagation();
-        onClose();
+        onCloseRef.current();
       }
       if (e.key === 'Tab' && ref.current) {
         const items = [...ref.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((x) => x.offsetParent !== null);
@@ -69,7 +75,7 @@ export function Dialog({
       document.body.style.overflow = overflow;
       prev?.focus?.();
     };
-  }, [open, dismissible, onClose]);
+  }, [open]);
 
   const widths = { sm: 'sm:max-w-sm', md: 'sm:max-w-md', lg: 'sm:max-w-2xl' };
 

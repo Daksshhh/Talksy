@@ -11,7 +11,10 @@ export function useVisualViewport() {
     let raf = 0;
     const update = () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => document.documentElement.style.setProperty('--vvh', `${Math.round(vv.height)}px`));
+      raf = requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--vvh', `${Math.round(vv.height)}px`);
+        document.documentElement.style.setProperty('--vv-top', `${Math.round(vv.offsetTop)}px`);
+      });
     };
     update();
     vv.addEventListener('resize', update);
@@ -20,6 +23,8 @@ export function useVisualViewport() {
       cancelAnimationFrame(raf);
       vv.removeEventListener('resize', update);
       vv.removeEventListener('scroll', update);
+      document.documentElement.style.removeProperty('--vvh');
+      document.documentElement.style.removeProperty('--vv-top');
     };
   }, []);
 }

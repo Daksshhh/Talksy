@@ -151,6 +151,7 @@ function ChatView() {
   const [reportOpen, setReportOpen] = useState(false);
   const [questOpen, setQuestOpen] = useState(false);
   const [confirmBlock, setConfirmBlock] = useState(false);
+  const [confirmEnd, setConfirmEnd] = useState(false);
   const [busy, setBusy] = useState<'friend' | 'block' | null>(null);
   const ended = s.phase === 'ended';
   const peerName = s.peer?.displayName ?? 'Stranger';
@@ -225,7 +226,7 @@ function ChatView() {
             { label: s.save === 'saved' ? 'Conversation will be saved' : 'Save conversation', icon: <Bookmark className="h-4 w-4" />, onSelect: () => chatClient.requestSave(), disabled: !live || s.save === 'saved' || s.save === 'requested_by_me' },
             { label: 'Report', icon: <Flag className="h-4 w-4" />, onSelect: () => setReportOpen(true), danger: true, disabled: s.reported },
             { label: 'Block', icon: <Ban className="h-4 w-4" />, onSelect: () => setConfirmBlock(true), danger: true },
-            ...(!ended ? [{ label: 'End chat', icon: <LogOut className="h-4 w-4" />, onSelect: () => chatClient.end(), danger: true }] : []),
+            ...(!ended ? [{ label: 'End chat', icon: <LogOut className="h-4 w-4" />, onSelect: () => setConfirmEnd(true), danger: true }] : []),
           ]}
         />
       </header>
@@ -244,8 +245,14 @@ function ChatView() {
             </p>
             <p className="mt-1 text-[11px] text-muted">Messages aren't stored unless you both choose to save the conversation.</p>
             {!s.quest && !ended && s.messages.length < 6 && (
-              <button onClick={() => setQuestOpen(true)} disabled={!live} className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-primary/40 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 disabled:opacity-50">
-                <Sparkles className="h-3.5 w-3.5" aria-hidden /> Not sure what to say? Start a Conversation Quest.
+              <button onClick={() => setQuestOpen(true)} disabled={!live} className="mx-auto mt-4 flex min-h-14 items-center gap-3 rounded-2xl border border-primary/40 bg-primary/10 px-4 py-2.5 text-left text-primary shadow-soft transition hover:border-primary hover:bg-primary/15 disabled:opacity-50">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/15">
+                  <Sparkles className="h-5 w-5" aria-hidden />
+                </span>
+                <span>
+                  <strong className="block text-sm">Play a random game</strong>
+                  <span className="block text-xs text-muted">Break the ice with a quick Conversation Quest</span>
+                </span>
               </button>
             )}
           </div>
@@ -268,7 +275,7 @@ function ChatView() {
         <>
           <div className="flex items-center gap-2 border-t border-border/60 px-3 pt-2 sm:px-6">
             <NextButton hold={holdToSkip} />
-            <Button size="sm" variant="ghost" onClick={() => chatClient.end()}>
+            <Button size="sm" variant="ghost" onClick={() => setConfirmEnd(true)}>
               End Chat
             </Button>
             <Button size="sm" variant="ghost" className="ml-auto sm:hidden" onClick={sendFriendRequest} disabled={s.friendRequest === 'sent' || s.friendRequest === 'friends'} aria-label={friendLabel}>
@@ -311,6 +318,12 @@ function ChatView() {
         }}
       />
       <QuestPicker open={questOpen} onClose={() => setQuestOpen(false)} />
+      <Dialog open={confirmEnd} onClose={() => setConfirmEnd(false)} title="End this chat?" description={`Your conversation with ${peerName} will end for both of you.`} size="sm">
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={() => setConfirmEnd(false)}>Keep chatting</Button>
+          <Button variant="danger" onClick={() => { setConfirmEnd(false); chatClient.end(); }}>End chat</Button>
+        </div>
+      </Dialog>
       <Dialog open={confirmBlock} onClose={() => setConfirmBlock(false)} title={`Block ${peerName}?`} description="The chat ends immediately, and you'll never be matched or contacted by them again." size="sm">
         <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={() => setConfirmBlock(false)}>

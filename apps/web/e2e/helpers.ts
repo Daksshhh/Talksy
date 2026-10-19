@@ -27,9 +27,7 @@ export async function twoGuests(browser: Browser, a = 'AlphaTester', b = 'BravoT
 }
 
 export async function matchPair(pa: Page, pb: Page) {
-  await pa.getByTestId('start-chat').click();
   await expect(pa.getByText('Finding someone to chat with…')).toBeVisible();
-  await pb.getByTestId('start-chat').click();
   await expect(pa.getByText('Connected', { exact: true })).toBeVisible();
   await expect(pb.getByText('Connected', { exact: true })).toBeVisible();
 }
