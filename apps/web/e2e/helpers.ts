@@ -14,6 +14,7 @@ export async function guestOnboard(page: Page, name: string) {
   await page.getByLabel(/I accept the/).check();
   await page.getByRole('button', { name: 'Start chatting' }).click();
   await expect(page).toHaveURL(/\/app\/chat/);
+  await expect(page.getByText(/Finding someone to chat with…|Connected/).first()).toBeVisible();
 }
 
 export async function twoGuests(browser: Browser, a = 'AlphaTester', b = 'BravoTester') {

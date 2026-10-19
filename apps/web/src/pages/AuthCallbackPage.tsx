@@ -18,7 +18,8 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const hash = new URLSearchParams(window.location.hash.slice(1));
-    const err = params.get('error_description') || hash.get('error_description') || params.get('error');
+    const err =
+      params.get('error_description') || hash.get('error_description') || params.get('error');
     if (err) {
       const code = params.get('error_code') || hash.get('error_code');
       setError(
@@ -32,13 +33,24 @@ export default function AuthCallbackPage() {
     const go = () => {
       if (done) return;
       done = true;
-      navigate(safeNext(params.get('next')), { replace: true });
+      const destination = safeNext(params.get('next'));
+      navigate(destination, {
+        replace: true,
+        state: destination.startsWith('/app/chat') ? { autoStart: true } : undefined,
+      });
     };
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session && (event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION')) go();
+      if (
+        session &&
+        (event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION')
+      )
+        go();
     });
     supabase.auth.getSession().then(({ data: d }) => d.session && go());
-    const t = setTimeout(() => !done && setError('Sign-in did not complete. Please try again.'), 12_000);
+    const t = setTimeout(
+      () => !done && setError('Sign-in did not complete. Please try again.'),
+      12_000,
+    );
     return () => {
       clearTimeout(t);
       data.subscription.unsubscribe();
