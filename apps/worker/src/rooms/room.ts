@@ -11,7 +11,8 @@ import { log, shortId } from '../services/logger';
  * Hibernatable WebSockets tagged with the participant's userId.
  * Persists room meta + message buffer in DO storage so hibernation/eviction
  * and browser refreshes within the grace period can restore the chat.
- * Buffer is deleted when the room ends (privacy).
+ * The transient buffer is deleted when the room ends; during initial testing,
+ * accepted messages are also written to the restricted 30-day archive table.
  */
 interface Attachment {
   userId: string;
@@ -161,6 +162,26 @@ export class ChatRoom extends DurableObject<Env> {
             'save_transcript',
           );
           break;
+        case 'archive_message': {
+          const sender = e.meta.participants.find((p) => p.userId === fx.message.senderId);
+          this.bg(
+            this.db.insert(
+              'testing_random_chat_messages',
+              {
+                message_id: fx.message.id,
+                session_id: roomId,
+                seq: fx.message.seq,
+                sender_id: fx.message.senderId,
+                sender_display_name: sender?.profile.displayName ?? 'Unknown',
+                body: fx.message.text,
+                sent_at: new Date(fx.message.ts).toISOString(),
+              },
+              { returning: false, upsert: 'message_id' },
+            ),
+            'archive_message',
+          );
+          break;
+        }
         case 'safety_event':
           this.bg(this.db.insert('safety_events', { user_id: fx.userId, session_id: roomId, kind: fx.event, detail: fx.detail }, { returning: false }), 'safety_event');
           break;

@@ -15,6 +15,7 @@ Migrations live in `supabase/migrations/`:
 | `random_chat_sessions`, `random_chat_participants` | Metadata-only history (nickname snapshot, timing, end reason) |
 | `conversation_save_consents`, `saved_random_messages` | Transcripts, only with both participants' consent |
 | `conversation_quest_sessions` | Quest category and rounds (answers are **not** stored) |
+| `testing_random_chat_messages` | Temporary admin-only archive of every accepted random-chat message for initial testing |
 | `notifications` | Per-user notifications (Realtime) |
 | `user_blocks`, `abuse_reports`, `moderation_actions`, `account_restrictions`, `admin_roles`, `safety_events` | Safety and moderation |
 
@@ -30,6 +31,7 @@ Migrations live in `supabase/migrations/`:
 |---|---|
 | Saved transcripts | 90 days, or until both participants revoke access |
 | Report evidence | 90 days (`evidence` set to null) |
+| Testing random-chat archive | 30 days |
 | Random-chat metadata | 180 days |
 | Read notifications | 60 days |
 | Safety events | 90 days |

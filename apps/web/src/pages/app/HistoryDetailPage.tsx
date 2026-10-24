@@ -92,7 +92,7 @@ export default function HistoryDetailPage() {
             </ol>
           </>
         ) : (
-          <p className="mt-1 text-sm text-muted">No transcript. Messages from random chats are only kept when both people tap “Save conversation”.</p>
+          <p className="mt-1 text-sm text-muted">No user-visible saved transcript. During initial testing, the operator may retain messages for limited review as described in the Privacy Policy.</p>
         )}
       </section>
 

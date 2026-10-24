@@ -44,7 +44,7 @@ const DOCS: Record<Doc, { title: string; body: ReactNode }> = {
           items={[
             'Account: an authentication ID; for Google sign-in, your Google identity/email is held by our auth provider and never shown to other users.',
             'Profile: nickname, generated avatar, optional bio, interests, language, gender (private unless you choose to show it), privacy and notification settings.',
-            'Random chats: metadata only — time, duration, the nicknames used, and whether a friend request was sent. Message text is held in memory by the chat room only while the chat is live and is deleted when it ends.',
+            `Random chats: during initial testing, message text, session identifiers, sender identifiers and nickname snapshots are stored for up to ${LIMITS.TESTING_CHAT_RETENTION_DAYS} days so the operator can review how the service is used. Access is restricted to the operator.`,
             `Saved conversations: only when BOTH participants agree. Kept for ${LIMITS.SAVED_TRANSCRIPT_RETENTION_DAYS} days or until both participants remove access.`,
             'Direct messages between friends: stored until deleted with your account. “Delete my copy” hides messages for you.',
             `Reports: your reason and notes, plus minimal evidence (up to the last ${LIMITS.REPORT_EVIDENCE_MESSAGES} messages of a live random chat, or the single reported DM). Evidence is deleted after ${LIMITS.REPORT_EVIDENCE_RETENTION_DAYS} days.`,

@@ -2,6 +2,7 @@ node_modules/
 dist/
 .wrangler/
 .dev.vars
+supabase/.temp/
 .env
 .env.local
 .env.*.local

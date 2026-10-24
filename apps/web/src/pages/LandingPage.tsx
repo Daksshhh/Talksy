@@ -13,7 +13,7 @@ import {
   UserPlus,
   Zap,
 } from 'lucide-react';
-import { BRAND } from '@orbit/shared';
+import { BRAND, LIMITS } from '@orbit/shared';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { usePresenceCount } from '@/hooks/queries';
@@ -254,7 +254,7 @@ export function LandingPage() {
               'Links from strangers are never clickable.',
               'Report anyone who seems underage.',
               'Blocking stops matches, requests and DMs instantly.',
-              'Stranger chats are not stored without mutual consent.',
+              `During testing, stranger chats may be reviewed and are deleted after ${LIMITS.TESTING_CHAT_RETENTION_DAYS} days.`,
             ].map((t) => (
               <li key={t} className="flex gap-2 rounded-2xl border border-border bg-surface p-3.5">
                 <Globe2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />

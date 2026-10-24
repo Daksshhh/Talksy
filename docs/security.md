@@ -33,7 +33,7 @@
 - The OAuth callback only follows same-site relative `next` paths, which prevents open redirects.
 
 ## Logging & privacy
-Structured JSON logs. They never include message bodies, tokens, emails or IPs, and user ids are truncated to 8 characters. Room buffers are deleted when a room ends. See `moderation.md` for retention.
+Structured application logs never include message bodies, tokens, emails or IPs, and user ids are truncated to 8 characters. During initial testing, accepted random-chat messages are stored in the RLS-protected `testing_random_chat_messages` database table for 30 days; normal authenticated users cannot query it. Room buffers are still deleted when a room ends. See `database.md` for retention.
 
 ## Known gaps / future hardening
 - The per-isolate REST limiter is approximate. Use Cloudflare Rate Limiting rules or a DO-based limiter for strict global limits.

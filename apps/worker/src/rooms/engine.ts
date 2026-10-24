@@ -75,6 +75,7 @@ export type RoomEffect =
       alsoBlock: boolean;
     }
   | { kind: 'save_transcript'; messages: RoomMessage[]; consentedBy: string[] }
+  | { kind: 'archive_message'; message: RoomMessage }
   | { kind: 'safety_event'; userId: string; event: string; detail: Record<string, unknown> }
   | { kind: 'quest_summary'; category: QuestCategoryId; rounds: number; startedAt: number }
   | { kind: 'activated' };
@@ -439,6 +440,7 @@ export class RoomEngine {
     const peer = this.peerOf(userId).userId;
     this.typingState.set(userId, false);
     return [
+      { kind: 'archive_message', message: msg },
       { kind: 'send', to: userId, event: { type: 'chat:ack', clientMsgId, id: msg.id, ts: msg.ts } },
       { kind: 'send', to: peer, event: { type: 'chat:message', message: this.view(msg, peer) } },
     ];

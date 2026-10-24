@@ -276,7 +276,7 @@ function ChatView() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* Header */}
-      <header className="glass flex items-center gap-3 border-b border-border/60 px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] sm:px-6 lg:pt-2.5">
+      <header className="glass relative z-50 flex shrink-0 items-center gap-3 overflow-visible border-b border-border/60 px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] sm:px-6 lg:pt-2.5">
         <Avatar
           seed={s.peer?.avatarSeed ?? 'x'}
           style={s.peer?.avatarStyle}
@@ -380,9 +380,9 @@ function ChatView() {
               You're chatting with <strong className="text-fg">{peerName}</strong>. Say hi! 👋
             </p>
             <p className="mt-1 text-[11px] text-muted">
-              Messages aren't stored unless you both choose to save the conversation.
+              During initial testing, messages are securely stored for up to {LIMITS.TESTING_CHAT_RETENTION_DAYS} days for review.
             </p>
-            {!s.quest && !ended && s.messages.length < 6 && (
+            {!s.quest && !ended && (
               <button
                 onClick={() => setQuestOpen(true)}
                 disabled={!live}

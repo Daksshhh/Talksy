@@ -23,6 +23,7 @@ export const LIMITS = {
   STALE_CONNECTION_MS: 65_000,
   /** In-room message buffer (for reconnect restore / consented saving / report evidence). */
   ROOM_BUFFER_MAX: 300,
+  TESTING_CHAT_RETENTION_DAYS: 30,
   REPORT_EVIDENCE_MESSAGES: 30,
   FRIEND_REQUEST_DECLINE_COOLDOWN_HOURS: 72,
   SAVED_TRANSCRIPT_RETENTION_DAYS: 90,

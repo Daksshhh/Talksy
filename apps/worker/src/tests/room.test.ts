@@ -72,6 +72,8 @@ describe('room lifecycle & messaging', () => {
     activate();
     const a = msg('A', 'once', 'client-0001');
     const b = msg('A', 'once', 'client-0001');
+    expect(a.filter((fx) => fx.kind === 'archive_message')).toHaveLength(1);
+    expect(b.filter((fx) => fx.kind === 'archive_message')).toHaveLength(0);
     expect(ofType(sends(a, 'B'), 'chat:message')).toHaveLength(1);
     expect(ofType(sends(b, 'B'), 'chat:message')).toHaveLength(0);
     expect(ofType(sends(b, 'A'), 'chat:ack')[0].id).toBe(ofType(sends(a, 'A'), 'chat:ack')[0].id);

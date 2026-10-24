@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Bookmark, Clock, History as HistoryIcon, UserCheck, UserPlus } from 'lucide-react';
+import { LIMITS } from '@orbit/shared';
 import { useHistory } from '@/hooks/queries';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge, EmptyState, ErrorState, Skeleton } from '@/components/ui/Feedback';
@@ -14,8 +15,7 @@ export default function HistoryPage() {
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <h1 className="text-2xl font-extrabold">History</h1>
       <p className="mt-1 text-sm text-muted">
-        Random chats keep only metadata (time, duration, the stranger's nickname). Message transcripts exist only when both people agreed to save them, and are deleted after 90
-        days. Friend DMs live in your <Link to="/app/inbox" className="font-semibold text-primary hover:underline">Inbox</Link>.
+        Your history shows metadata (time, duration, and the stranger's nickname). During initial testing, the operator keeps random-chat messages for up to {LIMITS.TESTING_CHAT_RETENTION_DAYS} days. User-visible transcripts appear only when both people agree to save them and are deleted after 90 days. Friend DMs live in your <Link to="/app/inbox" className="font-semibold text-primary hover:underline">Inbox</Link>.
       </p>
       <div className="mt-5">
         {h.isLoading ? (
